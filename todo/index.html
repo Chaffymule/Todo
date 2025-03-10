@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #todo-container {
+            background: white;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #new-task {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background: #fff;
+            border-radius: 5px;
+            margin: 5px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+        #clear-completed-btn {
+            background: #dc3545;
+            margin-top: 10px;
+        }
+        #clear-completed-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Tareas</h1>
+    <div id="todo-container">
+        <input type="text" id="new-task" placeholder="Agregar nueva tarea">
+        <button id="add-task-btn">Agregar</button>
+        <ul id="todo-list"></ul>
+        <button id="clear-completed-btn">Eliminar Completadas</button>
+    </div>
+    <script src="./dist/index.js" type="module"></script>
+</body>
+</html>

@@ -1,29 +1,57 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TodoCollection = void 0;
-const todoItem_1 = require("./todoItem");
-class TodoCollection {
+import { TodoItem } from "./todoItem.js";
+export class TodoCollection {
     constructor(userName, todoItems = []) {
         this.userName = userName;
-        this.todoItems = todoItems;
         this.nextId = 1;
-        // no statements required
+        this.itemMap = new Map();
+        // Cargar tareas desde localStorage
+        const storedTasks = localStorage.getItem("tasks");
+        if (storedTasks) {
+            let dbItems = JSON.parse(storedTasks);
+            dbItems.forEach((item) => this.itemMap.set(item.id, new TodoItem(item.id, item.task, item.complete)));
+        }
+        else {
+            this.storeTasks(todoItems);
+            todoItems.forEach(item => this.itemMap.set(item.id, item));
+        }
     }
     addTodo(task) {
         while (this.getTodoById(this.nextId)) {
             this.nextId++;
         }
-        this.todoItems.push(new todoItem_1.TodoItem(this.nextId, task));
+        this.itemMap.set(this.nextId, new TodoItem(this.nextId, task));
+        this.storeTasks();
         return this.nextId;
     }
     getTodoById(id) {
-        return this.todoItems.find(item => item.id === id);
+        return this.itemMap.get(id);
+    }
+    getTodoItems(includeComplete) {
+        return [...this.itemMap.values()]
+            .filter(item => includeComplete || !item.complete);
     }
     markComplete(id, complete) {
         const todoItem = this.getTodoById(id);
         if (todoItem) {
             todoItem.complete = complete;
+            this.storeTasks();
         }
     }
+    removeComplete() {
+        this.itemMap.forEach(item => {
+            if (item.complete) {
+                this.itemMap.delete(item.id);
+            }
+        });
+        this.storeTasks();
+    }
+    getItemCounts() {
+        return {
+            total: this.itemMap.size,
+            incomplete: this.getTodoItems(false).length
+        };
+    }
+    storeTasks(tasks = [...this.itemMap.values()]) {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
 }
-exports.TodoCollection = TodoCollection;
